@@ -86,7 +86,7 @@ let event_loop win draw =
   draw win;
   loop ()
 
-let entry (scene: Scene.t) =
+let entry (scene : Scene.t) =
   Sdl.init Sdl.Init.video >>= fun () ->
   create_window ~gl:(4, 1) >>= fun (win, ctx) ->
   (* create_geometry ()               >>= fun (gid, bids) -> *)

@@ -11,18 +11,16 @@ type perspective =
   | Orthographic of { width : int; height : int }
   | Perspective of { fov_radians : float }
 
-(** Three vertices form a face *)
 type face = v3 * v3 * v3
-
+(** Three vertices form a face *)
 
 (** Calculates the normal vector for a face *)
 let face_normal (_ : face) : v3 =
   failwith "TODO implement creating normal from face"
 
-
 module Primitives = struct
   type cylinder = { radius : float; height : float }
-  type cube = { extents: float }
+  type cube = { extents : float }
 
   module Cylinder = struct
     let mesh cyl = failwith "todo meshing"
@@ -44,9 +42,7 @@ module Resource = struct
   type texture
 end
 
-type renderable = 
-  Sprite
-  | Mesh of face list
+type renderable = Sprite | Mesh of face list
 
 (** A scene is broadly all the things we want to draw per frame.
     
@@ -57,13 +53,12 @@ module Scene = struct
 
   let empty = { entities = [] }
 
-  let add_primitive name (prim: Primitives.prim) (scene: t) : t =
+  let add_primitive name (prim : Primitives.prim) (scene : t) : t =
     let mesh = Primitives.to_mesh prim in
-    {  entities = (name, Mesh mesh) :: scene.entities}
+    { entities = (name, Mesh mesh) :: scene.entities }
 end
 
 module Renderer = struct
-
   let render_scene (ren : renderer) (scene : Scene.t) =
     List.iter
       (fun entity ->
@@ -72,7 +67,6 @@ module Renderer = struct
         let _model_tf = M4.id in
         match render_ent with
         | Sprite -> ()
-        | Mesh faces -> 
-          failwith "TODO draw faces")
+        | Mesh faces -> failwith "TODO draw faces")
       scene.entities
 end
