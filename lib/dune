@@ -1,2 +1,4 @@
 (library
- (name ocaml_rpg))
+ (name ocaml_rpg)
+ (public_name ocaml_rpg)
+ (libraries gg tsdl tgls.tgl4))
