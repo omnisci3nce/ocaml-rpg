@@ -12,7 +12,7 @@ type perspective =
 type face = (v3 * v3 * v3) (** Three vertices form a face *)
 
 (** Calculates the normal vector for a face *)
-let face_normal (_: face) : v3 = failwith "implement creating normal from face"
+let face_normal (_: face) : v3 = failwith "TODO implement creating normal from face"
 
 module type MeshPrimitive = sig
   type t
@@ -51,7 +51,10 @@ module Resource = struct
   type texture
 end
 
-(** This is a scene *)
+(** A scene is broadly all the things we want to draw per frame.
+    
+Some of the things you can do with a Scene are to sync it with the GPU,
+and to ask the Renderer to draw it. *)
 module Scene = struct
 
   type render_entity = [
@@ -59,4 +62,10 @@ module Scene = struct
   ]
 
   type t = { entities : render_entity list }
+end
+
+module Renderer = struct
+  type t
+
+  let render_scene ren scene = failwith "TODO implement Renderer"
 end
