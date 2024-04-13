@@ -1,4 +1,4 @@
-(executable
- (public_name ocaml_rpg)
- (name main)
+(executables
+ (public_names ocaml_rpg triangle)
+ (names main triangle)
  (libraries ocaml_rpg tsdl tgls.tgl4))
