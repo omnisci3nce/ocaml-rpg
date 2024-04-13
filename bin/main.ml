@@ -5,7 +5,39 @@ open Tgl4
 
 let ( >>= ) x f = match x with Ok v -> f v | Error _ as e -> e
 let ( let* ) = Result.bind
-let draw _win = ()
+
+module Palette = struct
+  (* Colours Src: https://twitter.com/malenchi_alex/status/1778508064007831694/photo/1 *)
+  let persimmon = "FF7433"
+  let light_gray = "FCF5ED"
+  let dove_gray = "D6CFC7"
+  let jet_black = "191919"
+
+  let hex_to_rgb hex =
+    let int_of_hex h = int_of_string ("0x" ^ h) in
+    let r = int_of_hex (String.sub hex 0 2) in
+    let g = int_of_hex (String.sub hex 2 2) in
+    let b = int_of_hex (String.sub hex 4 2) in
+    (float_of_int r /. 255.0, float_of_int g /. 255.0, float_of_int b /. 255.0)
+
+  (* Convert each color to RGB float triplet *)
+  let persimmon_rgb = hex_to_rgb persimmon
+  let light_gray_rgb = hex_to_rgb light_gray
+  let dove_gray_rgb = hex_to_rgb dove_gray
+  let jet_black_rgb = hex_to_rgb jet_black
+end
+
+let draw win =
+  let open Palette in
+  let r, g, b = dove_gray_rgb in
+  Gl.clear_color r g b 1.;
+  Gl.clear Gl.color_buffer_bit;
+  (* Gl.use_program pid;
+     Gl.bind_vertex_array gid;
+     Gl.draw_elements Gl.triangles 3 Gl.unsigned_byte (`Offset 0);
+     Gl.bind_vertex_array 0; *)
+  Sdl.gl_swap_window win;
+  ()
 
 let create_window ~gl:(maj, min) =
   let w_atts = Sdl.Window.(opengl + resizable) in
