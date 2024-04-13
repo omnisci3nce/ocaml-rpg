@@ -1,0 +1,4 @@
+(executable
+ (public_name ocaml_rpg)
+ (name main)
+ (libraries ocaml_rpg tsdl tgls.tgl4))
