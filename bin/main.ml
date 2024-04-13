@@ -2,6 +2,7 @@
 
 open Tsdl
 open Tgl4
+open Ocaml_rpg.Render
 
 let ( >>= ) x f = match x with Ok v -> f v | Error _ as e -> e
 let ( let* ) = Result.bind
@@ -27,11 +28,12 @@ module Palette = struct
   let jet_black_rgb = hex_to_rgb jet_black
 end
 
-let draw win =
+let draw scene win =
   let open Palette in
   let r, g, b = dove_gray_rgb in
   Gl.clear_color r g b 1.;
   Gl.clear Gl.color_buffer_bit;
+  Renderer.render_scene () scene;
   (* Gl.use_program pid;
      Gl.bind_vertex_array gid;
      Gl.draw_elements Gl.triangles 3 Gl.unsigned_byte (`Offset 0);
@@ -84,12 +86,12 @@ let event_loop win draw =
   draw win;
   loop ()
 
-let entry () =
+let entry (scene: Scene.t) =
   Sdl.init Sdl.Init.video >>= fun () ->
   create_window ~gl:(4, 1) >>= fun (win, ctx) ->
   (* create_geometry ()               >>= fun (gid, bids) -> *)
   (* create_program (glsl_version gl) >>= fun pid -> *)
-  event_loop win draw >>= fun () ->
+  event_loop win (draw scene) >>= fun () ->
   (* delete_program pid               >>= fun () ->
      delete_geometry gid bids         >>= fun () -> *)
   destroy_window win ctx >>= fun () ->
@@ -97,6 +99,11 @@ let entry () =
   Ok ()
 
 let () =
-  match entry () with
+  let scene =
+    Scene.empty
+    |> Scene.add_primitive "Cube Number One Babyyyyy"
+         (CubePrim { extents = 3.0 })
+  in
+  match entry scene with
   | Ok _ -> print_endline "Progam exited successfully"
   | Error (`Msg s) -> print_endline ("Program exited with error " ^ s)
